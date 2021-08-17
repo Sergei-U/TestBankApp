@@ -7,7 +7,6 @@ import ru.usov.testbankapp.entity.Operations;
 import ru.usov.testbankapp.repository.OperationsRepository;
 import ru.usov.testbankapp.repository.UserRepository;
 
-import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -22,7 +21,7 @@ public class BalanceService {
     private final UserRepository userRepository;
     private final OperationsRepository operationsRepository;
 
-    @Transactional
+
     public BigDecimal takeMoney(Long id, BigDecimal sum) {
         userRepository.getById(id).setBalance(userRepository.getById(id).getBalance().subtract(sum));
         List<Operations> operationsList = new ArrayList<>();
@@ -31,7 +30,6 @@ public class BalanceService {
         return userRepository.getById(id).getBalance();
     }
 
-    @Transactional
     public BigDecimal putMoney(Long id, BigDecimal sum) {
         userRepository.getById(id).setBalance(userRepository.getById(id).getBalance().add(sum));
         List<Operations> operationsList = new ArrayList<>();
@@ -52,12 +50,11 @@ public class BalanceService {
         else
             return userRepository.findById(id).get()
                     .getOperationsList()
-                    .stream().filter(operations -> operations.getDateOperation().isAfter(startDate)  && operations.getDateOperation().isBefore(endDate)).collect(Collectors.toList());
+                    .stream().filter(operations -> operations.getDateOperation().isAfter(startDate) && operations.getDateOperation().isBefore(endDate)).collect(Collectors.toList());
 
-//            return userRepository.findById(id).get().getOperationsList().stream().filter(operation -> dateOperation.after(startDate) && dateOperation.before(endDate)).collect(Collectors.toList());
     }
 
-    @Transactional
+
     public void transferMoney(Long usrFrom, Long usrTo, BigDecimal sum) {
         List<Operations> operationsFrom = new ArrayList<>();
         operationsFrom.add(new Operations(LocalDate.now(), NameOperation.TRANSFER_MONEY_SEND));
