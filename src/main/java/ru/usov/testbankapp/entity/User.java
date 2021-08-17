@@ -1,6 +1,8 @@
 package ru.usov.testbankapp.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -26,5 +28,6 @@ public class User {
     @OneToMany
     private List<Operations> operationsList;
 
-    public User() {}
+    public User() {
+    }
 }

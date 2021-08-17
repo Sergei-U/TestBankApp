@@ -2,6 +2,7 @@ package ru.usov.testbankapp.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.usov.testbankapp.entity.NameOperation;
 import ru.usov.testbankapp.entity.Operations;
 import ru.usov.testbankapp.repository.OperationsRepository;
@@ -21,7 +22,7 @@ public class BalanceService {
     private final UserRepository userRepository;
     private final OperationsRepository operationsRepository;
 
-
+    @Transactional
     public BigDecimal takeMoney(Long id, BigDecimal sum) {
         userRepository.getById(id).setBalance(userRepository.getById(id).getBalance().subtract(sum));
         List<Operations> operationsList = new ArrayList<>();
@@ -30,6 +31,7 @@ public class BalanceService {
         return userRepository.getById(id).getBalance();
     }
 
+    @Transactional
     public BigDecimal putMoney(Long id, BigDecimal sum) {
         userRepository.getById(id).setBalance(userRepository.getById(id).getBalance().add(sum));
         List<Operations> operationsList = new ArrayList<>();
@@ -38,6 +40,7 @@ public class BalanceService {
         return userRepository.getById(id).getBalance();
     }
 
+    @Transactional
     public List<Operations> getOperationList(Long id, LocalDate startDate, LocalDate endDate) {
         if (startDate == null)
             return userRepository.findById(id).get()
@@ -54,7 +57,7 @@ public class BalanceService {
 
     }
 
-
+    @Transactional
     public void transferMoney(Long usrFrom, Long usrTo, BigDecimal sum) {
         List<Operations> operationsFrom = new ArrayList<>();
         operationsFrom.add(new Operations(LocalDate.now(), NameOperation.TRANSFER_MONEY_SEND));
