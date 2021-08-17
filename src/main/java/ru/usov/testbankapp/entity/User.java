@@ -1,15 +1,15 @@
 package ru.usov.testbankapp.entity;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
-@Data
-@NoArgsConstructor
+@Getter
+@Setter
+@AllArgsConstructor
 @Table(name = "USR")
 public class User {
 
@@ -25,4 +25,6 @@ public class User {
 
     @OneToMany
     private List<Operations> operationsList;
+
+    public User() {}
 }

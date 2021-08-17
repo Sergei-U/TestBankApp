@@ -24,7 +24,5 @@ public class Operations {
         this.nameOperation = nameOperation;
     }
 
-    public Operations() {
-
-    }
+    public Operations() {}
 }

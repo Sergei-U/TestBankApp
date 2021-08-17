@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -36,19 +37,24 @@ public class BalanceService {
         List<Operations> operationsList = new ArrayList<>();
         operationsList.add(new Operations(LocalDate.now(), NameOperation.PUT_MONEY));
         userRepository.getById(id).setOperationsList(operationsList);
-
         return userRepository.getById(id).getBalance();
     }
 
     public List<Operations> getOperationList(Long id, LocalDate startDate, LocalDate endDate) {
-
         if (startDate == null)
-            operationsRepository.findOperationsByDateOperationBefore(endDate);
+            return userRepository.findById(id).get()
+                    .getOperationsList()
+                    .stream().filter(operations -> operations.getDateOperation().isBefore(endDate)).collect(Collectors.toList());
         else if (endDate == null)
-            operationsRepository.findOperationsByDateOperationAfter(startDate);
-        else operationsRepository.findOperationsByDateOperationBetween(startDate, endDate);
+            return userRepository.findById(id).get()
+                    .getOperationsList()
+                    .stream().filter(operations -> operations.getDateOperation().isAfter(startDate)).collect(Collectors.toList());
+        else
+            return userRepository.findById(id).get()
+                    .getOperationsList()
+                    .stream().filter(operations -> operations.getDateOperation().isAfter(startDate)  && operations.getDateOperation().isBefore(endDate)).collect(Collectors.toList());
 
-        return userRepository.getById(id).getOperationsList();
+//            return userRepository.findById(id).get().getOperationsList().stream().filter(operation -> dateOperation.after(startDate) && dateOperation.before(endDate)).collect(Collectors.toList());
     }
 
     @Transactional

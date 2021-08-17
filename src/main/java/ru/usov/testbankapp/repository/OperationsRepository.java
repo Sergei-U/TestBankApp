@@ -17,4 +17,5 @@ public interface OperationsRepository extends JpaRepository<Operations, Long> {
 
     List<Operations> findOperationsByDateOperationBetween(LocalDate startDate, LocalDate endDate);
 
+    List<Operations> findOperationBetween(LocalDate startDate, LocalDate endDate);
 }
