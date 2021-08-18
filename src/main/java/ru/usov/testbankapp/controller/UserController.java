@@ -13,14 +13,14 @@ public class UserController {
 
     @ExceptionHandler(value
             = {IllegalArgumentException.class, IllegalStateException.class})
-    @RequestMapping(method = RequestMethod.POST, value = "/create", consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(method = RequestMethod.POST, value = "/create")
     public void createUser(@RequestParam User user) {
         userService.addNewUser(user);
     }
 
     @ExceptionHandler(value
             = {IllegalArgumentException.class, IllegalStateException.class})
-    @RequestMapping(method = RequestMethod.POST, value = "/update", consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(method = RequestMethod.POST, value = "/update")
     public void updateUser(@RequestParam User user) {
         userService.updateUser(user);
     }

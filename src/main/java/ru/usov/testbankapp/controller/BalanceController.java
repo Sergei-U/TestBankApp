@@ -4,6 +4,7 @@ package ru.usov.testbankapp.controller;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.usov.testbankapp.entity.Operations;
+import ru.usov.testbankapp.entity.User;
 import ru.usov.testbankapp.service.BalanceService;
 
 import java.math.BigDecimal;
@@ -34,7 +35,7 @@ public class BalanceController {
 
     @ExceptionHandler(value
             = {IllegalArgumentException.class, IllegalStateException.class})
-    @RequestMapping(method = RequestMethod.GET, value = "/get")
+    @RequestMapping(method = RequestMethod.GET, value = "/operations")
     public List<Operations> getOperations(@RequestParam Long id,
                                           @RequestParam LocalDate startDate,
                                           @RequestParam LocalDate endDate) {
@@ -43,10 +44,19 @@ public class BalanceController {
 
     @ExceptionHandler(value
             = {IllegalArgumentException.class, IllegalStateException.class})
-    @RequestMapping(method = RequestMethod.POST, value = "/get")
+    @RequestMapping(method = RequestMethod.POST, value = "/transfer")
     public void transferMoney(@RequestParam Long usrFrom,
                               @RequestParam Long usrTo,
                               @RequestParam BigDecimal sum) {
         balanceService.transferMoney(usrFrom, usrTo, sum);
+    }
+
+    @ExceptionHandler(value
+            = {IllegalArgumentException.class, IllegalStateException.class})
+    @RequestMapping(method = RequestMethod.GET, value = "/operations2")
+    public List<User> getOperationList(@RequestParam Long id,
+                                       @RequestParam LocalDate startDate,
+                                       @RequestParam LocalDate endDate) {
+        return balanceService.userOperations(id, startDate, endDate);
     }
 }

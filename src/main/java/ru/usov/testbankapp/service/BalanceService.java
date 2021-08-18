@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.usov.testbankapp.entity.NameOperation;
 import ru.usov.testbankapp.entity.Operations;
+import ru.usov.testbankapp.entity.User;
 import ru.usov.testbankapp.repository.OperationsRepository;
 import ru.usov.testbankapp.repository.UserRepository;
 
@@ -67,5 +68,10 @@ public class BalanceService {
         userRepository.getById(usrTo).setOperationsList(operationsTo);
         userRepository.getById(usrFrom).setBalance(userRepository.getById(usrFrom).getBalance().subtract(sum));
         userRepository.getById(usrTo).setBalance(userRepository.getById(usrTo).getBalance().add(sum));
+    }
+
+    @Transactional
+    public List<User> userOperations(Long id, LocalDate startDate, LocalDate endDate) {
+        return userRepository.findByIdAndOperationsList_DateOperationBetween(id, startDate, endDate);
     }
 }
